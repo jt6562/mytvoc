@@ -3,7 +3,7 @@
 
 config = {
     "hcho": {
-        "serial": "/dev/ttyS15",
+        "serial": "/dev/ttyUSB0",
         "baudrate": 9600
     }
 }

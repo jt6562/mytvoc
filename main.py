@@ -4,7 +4,7 @@
 from conf import config as conf
 import serial
 import struct
-from time import sleep
+from time import sleep, ctime
 import requests
 import json
 
@@ -24,8 +24,14 @@ def request_HCHO_value(client):
 
     resp_data = client.read(15)
     resp_data = struct.unpack("!4xH4xHHx", resp_data)
+    print resp_data
     return resp_data[1]/100.0
 
+def reset_HCHO_detector(client):
+    req_data = (0xa5, 0x5a, 0x02, 0x85, 0xaa)
+    req_data = struct.pack("!5B", *req_data)
+
+    client.write(req_data)
 
 def upload_HCHO_value(value):
     payload = [
@@ -40,12 +46,16 @@ def upload_HCHO_value(value):
 
 def main():
     hcho_client = init_HCHO_sensor()
-    request_HCHO_value(hcho_client)
+    #reset_HCHO_detector(hcho_client)
+
     while 1:
-        hcho_value = request_HCHO_value(hcho_client)
-        print hcho_value
-        upload_HCHO_value(hcho_value)
-        sleep(10)
+        try:
+            print ctime()
+            hcho_value = request_HCHO_value(hcho_client)
+            upload_HCHO_value(hcho_value)
+            sleep(10)
+        except:
+            pass
     hcho_client.close()
 
 
