@@ -8,9 +8,6 @@ from time import sleep, ctime
 import requests
 import json
 
-headers = {"userkey": "a34f724c03574b1d8eeca4185bb854a2"}
-url = "http://www.lewei50.com/api/V1/gateway/UpdateSensors/01"
-
 def init_HCHO_sensor():
     print("Opening serial %s" % conf['hcho']['serial'])
     client = serial.Serial(conf['hcho']['serial'], baudrate=conf['hcho']['baudrate'])
@@ -40,7 +37,8 @@ def upload_HCHO_value(value):
             "Value": value
         }
     ]
-    r = requests.post(url, data=json.dumps(payload), headers=headers)
+    cloud = conf['cloud']
+    r = requests.post(cloud['url'], data=json.dumps(payload), headers=cloud['headers'])
     print r.text
 
 
@@ -54,8 +52,10 @@ def main():
             hcho_value = request_HCHO_value(hcho_client)
             upload_HCHO_value(hcho_value)
             sleep(10)
-        except:
-            pass
+        except (serial.SerialException, requests.RequestException) as e:
+            print e
+            sleep(10)
+
     hcho_client.close()
 
 
