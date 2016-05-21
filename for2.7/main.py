@@ -1,12 +1,19 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+import sys
+sys.path.append("..")
+
 from conf import config as conf
+from common import RollingMean
 import serial
 import struct
 from time import sleep, ctime
 import requests
 import json
+
+
+rollmean = RollingMean(60)
 
 def init_HCHO_sensor():
     print("Opening serial %s" % conf['hcho']['serial'])
@@ -50,7 +57,9 @@ def main():
         try:
             print ctime()
             hcho_value = request_HCHO_value(hcho_client)
-            upload_HCHO_value(hcho_value)
+            rollmean.append(hcho_value)
+            value = rollmean.get_mean()
+            upload_HCHO_value(value)
             sleep(10)
         except (serial.SerialException, requests.RequestException) as e:
             print e
@@ -61,4 +70,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
+
