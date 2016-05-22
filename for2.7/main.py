@@ -2,7 +2,7 @@
 # encoding: utf-8
 
 import sys
-sys.path.append("..")
+sys.path.append("/home/ubuntu/mytvoc")
 
 from conf import config as conf
 from common import RollingMean
@@ -13,7 +13,7 @@ import requests
 import json
 
 
-rollmean = RollingMean(60)
+rollmean = RollingMean(6)
 
 def init_HCHO_sensor():
     print("Opening serial %s" % conf['hcho']['serial'])
