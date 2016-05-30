@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+from config import config as conf
+import json
+
 
 class RollingMean(list):
     def __init__(self, window_size, *args):
@@ -22,19 +25,14 @@ class RollingMean(list):
 if __name__ == '__main__':
     r = RollingMean(5)
     r.append(1)
-
+    r.append(5)
+    print r.get_mean()
+    r.append(5)
+    r.append(5)
+    r.append(5)
+    print r.get_mean()
     r.append(5)
     print r.get_mean()
 
-    r.append(5)
-    print r.get_mean()
-
-    r.append(5)
-    print r.get_mean()
-
-    r.append(5)
-    print r.get_mean()
-
-    r.append(5)
-    print r.get_mean()
-
+    l = LeWeiUploadToCloud("http://127.0.0.1", None)
+    l.upload('hcho', 29.7)
