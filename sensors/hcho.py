@@ -7,11 +7,12 @@ from base import SensorBase
 from tornado.concurrent import run_on_executor
 
 class Sensor(SensorBase):
-    def __init__(self, config, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(Sensor, self).__init__(*args, **kwargs)
-        serial_path = config.get('serial', "")
-        baudrate = config.get('baudrate', 9600)
-        self.name = 'hcho'
+
+        serial_path = self.config.get('serial', "")
+        baudrate = self.config.get('baudrate', 9600)
+        self.name = self.config.get('name', 'hcho')
         self.device = serial.Serial(serial_path, baudrate=baudrate)
 
     def reset(self):

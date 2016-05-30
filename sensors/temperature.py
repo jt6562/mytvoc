@@ -7,9 +7,10 @@ from w1thermsensor import W1ThermSensor
 
 
 class Sensor(SensorBase):
-    def __init__(self, config, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(Sensor, self).__init__(*args, **kwargs)
-        self.name = 'temp'
+
+        self.name = self.config.get['name', 'temp']
         self.device = W1ThermSensor()
 
     @run_on_executor

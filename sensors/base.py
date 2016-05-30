@@ -6,10 +6,11 @@ from tornado import gen, ioloop, queues
 
 class SensorBase(object):
 
-    def __init__(self, callback):
+    def __init__(self, config, callback):
         self.callback = callback
         self.executor = ThreadPoolExecutor(1)
         self.queue = queues.Queue()
+        self.config = config
 
     @gen.coroutine
     def run(self):

@@ -13,13 +13,16 @@ config = {
         "hcho": {
             "enable": True,
             "device": {
+                "name": "hcho",
                 "serial": "/dev/ttyUSB0",
                 "baudrate": 9600
             }
         },
         "temperature": {
             "enable": True,
-            "device": {}
+            "device": {
+                "name": "temp",
+            }
         }
     }
 }
