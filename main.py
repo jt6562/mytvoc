@@ -2,11 +2,12 @@
 # encoding: utf-8
 
 from config import config
-from tornado import ioloop, gen
+from tornado import ioloop, gen, autoreload
 from utils import RollingMean
 
 import sensors
 import clouds
+
 
 
 def init_sensors(cloud_instances):
@@ -43,19 +44,22 @@ def start_detect(sensors_instances):
     test_count = 0
     while 1:
         for sensor in sensors_instances:
-            print ">>>> add a test task", sensor.name, sensor.queue
             sensor.queue.put(test_count)
         test_count += 1
 
-        yield gen.sleep(10)
-
+        yield gen.sleep(15)
 
 if __name__ == '__main__':
     cloud_instances = init_clouds()
     sensors_instances = init_sensors(cloud_instances)
+
     for sensor in sensors_instances:
         sensor.run()
+
     print("starting detect")
     start_detect(sensors_instances)
-    ioloop.IOLoop.instance().start()
+
+    instance = ioloop.IOLoop.instance()
+    autoreload.start(instance)
+    instance.start()
 

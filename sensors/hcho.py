@@ -28,9 +28,10 @@ class Sensor(SensorBase):
 
         self.device.write(req_data)
 
-        resp_data = client.read(15)
+        resp_data = self.device.read(15)
         resp_data = struct.unpack("!4xH4xHHx", resp_data)
 
         value = resp_data[1]/100.0
 
         return value
+

@@ -3,6 +3,7 @@
 
 from concurrent.futures import ThreadPoolExecutor
 from tornado import gen, ioloop, queues
+from time import ctime
 
 class SensorBase(object):
 
@@ -21,4 +22,5 @@ class SensorBase(object):
                 yield self.callback(self.name, value)
             finally:
                 self.queue.task_done()
-                print '<<<<<done', self.name, self.queue
+                print '<<<<<detected', ctime(), self.name, value, 'left', self.queue.qsize()
+

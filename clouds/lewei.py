@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 from tornado.concurrent import run_on_executor
 import requests
 import json
+from time import ctime
 
 
 class Cloud(object):
@@ -20,8 +21,12 @@ class Cloud(object):
         payload = [{"Name": sensor_name,
                     "Value": value}]
 
-        #r = requests.post(self.gw_url, data=json.dumps(payload), headers=self.headers)
-        #print r.text
-        #return r.ok
-        print 'upload true'
-        return True
+        try:
+            r = requests.post(self.gw_url, data=json.dumps(payload), headers=self.headers)
+        except Exception as e:
+            print e
+            return 0
+            
+
+        print ctime(), r.text
+        return r.ok

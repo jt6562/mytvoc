@@ -10,7 +10,7 @@ class Sensor(SensorBase):
     def __init__(self, *args, **kwargs):
         super(Sensor, self).__init__(*args, **kwargs)
 
-        self.name = self.config.get['name', 'temp']
+        self.name = self.config.get('name', 'temp')
         self.device = W1ThermSensor()
 
     @run_on_executor
@@ -18,3 +18,4 @@ class Sensor(SensorBase):
         value = self.device.get_temperature()
 
         return value
+
